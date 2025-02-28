@@ -6,3 +6,5 @@ edition = "2024"
 [dependencies]
 image = "0.25.5"
 crossterm = "0.28.1"
+rfd = "0.15.2"
+eframe = "0.31.0"
