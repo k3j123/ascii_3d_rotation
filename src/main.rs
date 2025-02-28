@@ -1,13 +1,20 @@
 use image::{GrayImage, Luma, ImageReader};
-use std::{thread, time};
+use std::{thread, time, io};
 use crossterm::{execute, terminal::{Clear, ClearType}, cursor::MoveTo};
 use std::io::{stdout, Write};
 use std::f64::consts::PI;
 
-const ASCII_CHARS: &[u8] = b"@%#MW&8B$*o!;:. ";
-const WIDTH: usize = 40;
-const HEIGHT: usize = 40;
-const ROTATION_SPEED: f64 = 0.1;
+const ASCII_CHARS: &[u8] = b"@%#MW&8B$*o!;:. "; // More detailed ASCII gradient
+const WIDTH: usize = 50; // Increased width for better detail
+const HEIGHT: usize = 50; // Adjusted height for better aspect ratio
+const ROTATION_SPEED: f64 = 0.1; // Rotation speed in radians
+
+fn get_user_input() -> String {
+    let mut input = String::new();
+    println!("Enter the path to the image file:");
+    io::stdin().read_line(&mut input).unwrap();
+    input.trim().to_string()
+}
 
 fn load_image(path: &str) -> GrayImage {
     let img = ImageReader::open(path).unwrap().decode().unwrap().into_luma8();
@@ -55,7 +62,8 @@ fn display_ascii(ascii_art: &[Vec<char>]) {
 }
 
 fn main() {
-    let img = load_image("blockofcheese.jpg");
+    let image_path = get_user_input();
+    let img = load_image(&image_path);
     let ascii_art = image_to_ascii(&img);
     let mut angle = 0.0;
     
